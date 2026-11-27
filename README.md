@@ -75,4 +75,51 @@ GROUP BY deptno
 HAVING SUM(sal) >= 50000000;
 ```
 
+#### 조인
+
+- 여러 개의 테이블을 연결하여 하나의 테이블을 만드는 과정을 조인이라고 한다.
+-------
+
+1. INNER JOIN
+- 두 테이블에서 조인 조건을 만족하는 행만 결합해 반환한다.
+- JOIN만 써도 INNER JOIN으로 동작한다.
+```sql
+-- ANSI ON (권장)
+SELECT e.ename, d.dname
+FROM   emp e
+INNER JOIN dept d ON e.deptno = d.deptno
+WHERE  e.sal > 2000;
+
+-- USING
+SELECT ename, dname, deptno
+FROM   emp INNER JOIN dept USING (deptno);
+
+-- Oracle 전통 문법
+SELECT e.ename, d.dname
+FROM   emp e, dept d
+WHERE  e.deptno = d.deptno;
+```
+--------
+2. LEFT / RIGHT OUTER JOIN
+- LEFT는 왼쪽 테이블의 모든 행 + 조건에 맞는 오른쪽 행 (없으면 NULL) 반환
+- RIGHT는 오른쪽 테이블의 모든 행 + 조건에 맞는 왼쪽 행 (없으면 NULL) 반환
+- OUTER 키워드는 생략 가능
+
+```sql
+-- 모든 부서를 출력 (사원이 없는 부서도 포함)
+-- ANSI LEFT
+SELECT d.dname, e.ename
+FROM   dept d
+LEFT OUTER JOIN emp e ON d.deptno = e.deptno;
+
+-- ANSI RIGHT (위와 같은 결과)
+SELECT d.dname, e.ename
+FROM   emp e
+RIGHT OUTER JOIN dept d ON d.deptno = e.deptno;
+
+-- Oracle 전통 문법
+SELECT d.dname, e.ename
+FROM   dept d, emp e
+WHERE  d.deptno = e.deptno(+);
+```
 </details>
